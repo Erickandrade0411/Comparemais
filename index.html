@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Comparador de Compras</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         TELA DE LOGIN
+         ===================================================== -->
+
+    <div id="loginScreen" class="login-screen">
+
+        <div class="login-card">
+
+            <div class="login-logo">
+                🛒
+            </div>
+
+            <span class="eyebrow">
+                ACESSO RESTRITO
+            </span>
+
+            <h1>
+                Consulta de Compras
+            </h1>
+
+            <p>
+                Entre com suas credenciais para acessar o sistema.
+            </p>
+
+
+            <form id="loginForm">
+
+
+                <div class="login-field">
+
+                    <label for="loginUsuario">
+                        Login
+                    </label>
+
+                    <input
+                        type="text"
+                        id="loginUsuario"
+                        placeholder="Digite seu login"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="login-field">
+
+                    <label for="loginSenha">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginSenha"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="mostrarSenha"
+                            class="show-password"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="loginErro"
+                    class="login-error"
+                >
+                    Login ou senha incorretos.
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-login"
+                >
+                    Entrar
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SITE PRINCIPAL
+         ===================================================== -->
+
+    <div id="app">
+
+
+        <!-- CABEÇALHO -->
+
+        <header class="header">
+
+            <div class="header-content">
+
+                <div>
+
+                    <span class="eyebrow">
+                        CONTROLE DE COMPRAS
+                    </span>
+
+                    <h1>
+                        Comparador de Compras
+                    </h1>
+
+                    <p>
+                        Compare preços, quantidades e gastos entre diferentes meses.
+                    </p>
+
+                </div>
+
+
+                <div class="header-actions">
+
+                    <button
+                        class="btn btn-secondary"
+                        id="btnExportar"
+                    >
+                        Exportar dados
+                    </button>
+
+
+                    <label class="btn btn-secondary file-button">
+
+                        Importar dados
+
+                        <input
+                            type="file"
+                            id="inputImportar"
+                            accept=".json"
+                            hidden
+                        >
+
+                    </label>
+
+
+                    <button
+                        class="btn btn-logout"
+                        id="btnLogout"
+                    >
+                        Sair
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <main class="container">
+
+
+            <!-- =================================================
+                 COMPARAÇÃO
+                 ================================================= -->
+
+            <section class="comparison-selector">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            COMPARAÇÃO
+                        </span>
+
+                        <h2>
+                            Compare dois meses
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-primary"
+                        id="btnAtualizar"
+                    >
+                        Atualizar comparação
+                    </button>
+
+                </div>
+
+
+                <div class="month-selectors">
+
+
+                    <div class="month-box">
+
+                        <label for="mesA">
+                            Primeiro mês
+                        </label>
+
+                        <select id="mesA"></select>
+
+                    </div>
+
+
+                    <div class="versus">
+                        ×
+                    </div>
+
+
+                    <div class="month-box">
+
+                        <label for="mesB">
+                            Segundo mês
+                        </label>
+
+                        <select id="mesB"></select>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 RESUMO
+                 ================================================= -->
+
+            <section class="dashboard-grid">
+
+
+                <div class="summary-card">
+
+                    <span class="card-label">
+                        Total do primeiro mês
+                    </span>
+
+                    <strong id="totalA">
+                        R$ 0,00
+                    </strong>
+
+                    <small id="quantidadeA">
+                        0 lançamentos
+                    </small>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="card-label">
+                        Total do segundo mês
+                    </span>
+
+                    <strong id="totalB">
+                        R$ 0,00
+                    </strong>
+
+                    <small id="quantidadeB">
+                        0 lançamentos
+                    </small>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="card-label">
+                        Diferença
+                    </span>
+
+                    <strong id="diferencaTotal">
+                        R$ 0,00
+                    </strong>
+
+                    <small id="percentualTotal">
+                        0%
+                    </small>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <span class="card-label">
+                        Produtos comparados
+                    </span>
+
+                    <strong id="produtosComparados">
+                        0
+                    </strong>
+
+                    <small>
+                        entre os dois meses
+                    </small>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PESQUISA
+                 ================================================= -->
+
+            <section class="search-section">
+
+
+                <div class="search-box">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="text"
+                        id="pesquisaProduto"
+                        placeholder="Pesquisar produto..."
+                    >
+
+                </div>
+
+
+                <select id="filtroCategoria">
+
+                    <option value="todos">
+                        Todos os nichos
+                    </option>
+
+                </select>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NICHOS
+                 ================================================= -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ANÁLISE POR NÍVEL
+                        </span>
+
+                        <h2>
+                            Comparação por nicho
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="category-grid"
+                    id="categoriasContainer"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRODUTOS
+                 ================================================= -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            PRODUTOS
+                        </span>
+
+                        <h2>
+                            Comparação produto por produto
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Produto
+                                </th>
+
+                                <th>
+                                    Nicho
+                                </th>
+
+                                <th>
+                                    Qtd. mês 1
+                                </th>
+
+                                <th>
+                                    Qtd. mês 2
+                                </th>
+
+                                <th>
+                                    Dif. qtd.
+                                </th>
+
+                                <th>
+                                    Valor mês 1
+                                </th>
+
+                                <th>
+                                    Valor mês 2
+                                </th>
+
+                                <th>
+                                    Dif. valor
+                                </th>
+
+                                <th>
+                                    Variação
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tabelaProdutos"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 MAIOR / MENOR
+                 ================================================= -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            DESTAQUES
+                        </span>
+
+                        <h2>
+                            Maior e menor valor por nicho
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="highlights-grid"
+                    id="destaquesContainer"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NOVO MÊS
+                 ================================================= -->
+
+            <section class="section management-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            HISTÓRICO
+                        </span>
+
+                        <h2>
+                            Adicionar novo mês
+                        </h2>
+
+                        <p>
+                            Cadastre uma nova lista para continuar seu histórico.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="novoMes">
+                            Nome do mês
+                        </label>
+
+                        <input
+                            type="text"
+                            id="novoMes"
+                            placeholder="Ex.: Outubro 2026"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-primary"
+                        id="btnCriarMes"
+                    >
+                        Criar mês
+                    </button>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NOVO PRODUTO
+                 ================================================= -->
+
+            <section class="section management-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            NOVA COMPRA
+                        </span>
+
+                        <h2>
+                            Adicionar produto
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="product-form">
+
+
+                    <div class="form-group">
+
+                        <label for="produtoMes">
+                            Mês
+                        </label>
+
+                        <select id="produtoMes"></select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="produtoNome">
+                            Produto
+                        </label>
+
+                        <input
+                            type="text"
+                            id="produtoNome"
+                            placeholder="Nome do produto"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="produtoQuantidade">
+                            Quantidade
+                        </label>
+
+                        <input
+                            type="number"
+                            id="produtoQuantidade"
+                            min="0"
+                            step="0.001"
+                            placeholder="1"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="produtoUnidade">
+                            Unidade
+                        </label>
+
+                        <select id="produtoUnidade">
+
+                            <option value="un">
+                                Unidade
+                            </option>
+
+                            <option value="kg">
+                                Kg
+                            </option>
+
+                            <option value="bandeja">
+                                Bandeja
+                            </option>
+
+                            <option value="pacote">
+                                Pacote
+                            </option>
+
+                            <option value="caixa">
+                                Caixa
+                            </option>
+
+                            <option value="garrafa">
+                                Garrafa
+                            </option>
+
+                            <option value="lata">
+                                Lata
+                            </option>
+
+                            <option value="litro">
+                                Litro
+                            </option>
+
+                            <option value="peso">
+                                Peso
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="produtoValor">
+                            Valor total
+                        </label>
+
+                        <input
+                            type="number"
+                            id="produtoValor"
+                            min="0"
+                            step="0.01"
+                            placeholder="0,00"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="produtoCategoria">
+                            Nicho
+                        </label>
+
+                        <select id="produtoCategoria">
+
+                            <option value="Bebidas">
+                                Bebidas
+                            </option>
+
+                            <option value="Carnes e proteínas">
+                                Carnes e proteínas
+                            </option>
+
+                            <option value="Laticínios">
+                                Laticínios
+                            </option>
+
+                            <option value="Hortifruti">
+                                Hortifruti
+                            </option>
+
+                            <option value="Mercearia">
+                                Mercearia
+                            </option>
+
+                            <option value="Massas e pães">
+                                Massas e pães
+                            </option>
+
+                            <option value="Biscoitos e snacks">
+                                Biscoitos e snacks
+                            </option>
+
+                            <option value="Molhos e conservas">
+                                Molhos e conservas
+                            </option>
+
+                            <option value="Temperos">
+                                Temperos
+                            </option>
+
+                            <option value="Limpeza">
+                                Limpeza
+                            </option>
+
+                            <option value="Higiene pessoal">
+                                Higiene pessoal
+                            </option>
+
+                            <option value="Papel e utilidades">
+                                Papel e utilidades
+                            </option>
+
+                            <option value="Outros">
+                                Outros
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-primary"
+                        id="btnAdicionarProduto"
+                    >
+                        Adicionar produto
+                    </button>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTAÇÃO CSV
+                 ================================================= -->
+
+            <section class="section management-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            IMPORTAÇÃO
+                        </span>
+
+                        <h2>
+                            Adicionar vários produtos
+                        </h2>
+
+                        <p>
+                            produto;quantidade;unidade;valor;nicho
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="listaCSV">
+                        Lista de produtos
+                    </label>
+
+                    <textarea
+                        id="listaCSV"
+                        rows="8"
+                        placeholder="Coca-Cola PET 2L;2;un;12,00;Bebidas
+Arroz Tio João 2Kg;1;un;11,98;Mercearia"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="csv-actions">
+
+                    <select id="csvMes"></select>
+
+                    <button
+                        class="btn btn-primary"
+                        id="btnImportarCSV"
+                    >
+                        Adicionar lista
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+        <footer class="footer">
+
+            <p>
+                Comparador de Compras • Controle mensal de gastos
+            </p>
+
+        </footer>
+
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
